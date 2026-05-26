@@ -88,7 +88,7 @@
 
 ---
 
-### 📝 モデルによる出力テキストサンプル
+### モデルによる出力テキストサンプル
 
 ```text
 [Prompt]: The capital of France is
