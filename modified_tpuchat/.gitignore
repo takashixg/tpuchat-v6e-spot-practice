@@ -1,0 +1,8 @@
+nanochat
+maxtext
+.venv
+uv.lock
+__pycache__
+scaling-book/
+.notebook_hashes
+pallas/.colab_connection
