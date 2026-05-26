@@ -14,7 +14,7 @@
 
 単一TPU構成である [02_train.py](https://github.com/vorushin/tpuchat/blob/master/02_train.py) から、以下の要点・改修内容を組み込んだ分散特化パッチスクリプト `02_train_distributed.py` を作成しました。
 
-### 📌 パッチ編集内容詳細
+### パッチ編集内容詳細
 
 ```diff
 --- a/02_train.py
