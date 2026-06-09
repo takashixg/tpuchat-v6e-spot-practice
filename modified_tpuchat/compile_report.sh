@@ -4,15 +4,15 @@ set -e
 cd ~/tpuchat_e2e
 
 # Extract CPT Stats
-BEST_CPT_VAL=$(grep -E "Val loss:" cpt_training.log | tail -n 1 | awk '{print $4}' || echo "N/A")
-BEST_CPT_TOK=$(grep -E "tok/s:" cpt_training.log | awk '{print $14}' | sort -n | tail -n 1 || echo "N/A")
+BEST_CPT_VAL=$(grep -E "Val loss:" cpt_training.log | tail -n 1 | awk '{print $6}' || echo "N/A")
+BEST_CPT_TOK=$(grep -E "tok/s:" cpt_training.log | awk '{gsub(",", "", $15); print $15}' | sort -n | tail -n 1 || echo "N/A")
 # Adjust for 8x TPU since CPT script logs batch_size per device but we processed B=32 total
 if [ "${BEST_CPT_TOK}" != "N/A" ]; then
     BEST_CPT_TOK=$(echo ${BEST_CPT_TOK} 8 | awk '{print $1 * $2}' || echo ${BEST_CPT_TOK})
 fi
 
 # Extract SFT Stats
-BEST_SFT_VAL=$(grep -E "Val loss:" sft_training.log | tail -n 1 | awk '{print $6}' || echo "N/A")
+BEST_SFT_VAL=$(grep -E "Val loss:" sft_training.log | tail -n 1 | awk '{print $7}' || echo "N/A")
 
 # Compile Report
 REPORT_FILE="cpt_sft_e2e_report.md"
@@ -36,7 +36,7 @@ echo "" >> ${REPORT_FILE}
 
 echo "\`\`\`text" >> ${REPORT_FILE}
 # Extract chat samples from sft log
-grep -A 4 "--- SFT Chat Samples" sft_training.log | tail -n 20 >> ${REPORT_FILE}
+sed -n '/--- SFT Chat Samples (step 500) ---/,$p' sft_training.log >> ${REPORT_FILE}
 echo "\`\`\`" >> ${REPORT_FILE}
 echo "" >> ${REPORT_FILE}
 echo "## 3. 実装上の技術的優位性" >> ${REPORT_FILE}
